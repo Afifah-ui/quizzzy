@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quizy App</title>
+
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Poppins',sans-serif;margin:0;padding:0}
+
+body{
+background:linear-gradient(135deg,#1e90ff,#ffd93d);
+min-height:100vh;
+color:#333;
+}
+
+header{
+padding:20px;
+color:white;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+.container{
+display:flex;
+gap:20px;
+padding:20px;
+flex-wrap:wrap;
+}
+
+.left-img{
+flex:1;
+min-width:250px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.left-img img{
+width:100%;
+max-width:280px;
+animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-12px)}
+100%{transform:translateY(0)}
+}
+
+.main{
+flex:2;
+background:white;
+border-radius:20px;
+padding:20px;
+min-width:300px;
+box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.menu button{
+width:100%;
+padding:12px;
+margin:7px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+color:white;
+background:linear-gradient(135deg,#4facfe,#00c6ff);
+cursor:pointer;
+}
+
+.menu button:hover{transform:scale(1.04)}
+
+.question{
+font-size:18px;
+margin-bottom:15px;
+}
+
+.answer{
+background:#f1f1f1;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+cursor:pointer;
+}
+
+.answer:hover{background:#ffd93d}
+
+.nav{
+position:fixed;
+bottom:15px;
+left:15px;
+right:15px;
+display:flex;
+justify-content:space-between;
+}
+
+.btn-back,.btn-next{
+padding:8px 15px;
+border:none;
+border-radius:20px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-back{background:#ffd93d}
+.btn-next{background:#1e90ff;color:white}
+
+.scoreCard{
+background:white;
+padding:20px;
+border-radius:20px;
+text-align:center;
+}
+.scoreCard img{
+width:120px;
+animation:bounce 1s infinite alternate;
+}
+@keyframes bounce{
+from{transform:translateY(0)}
+to{transform:translateY(-8px)}
+}
+
+footer{
+text-align:center;
+color:white;
+padding:10px;
+font-size:13px;
+}
+
+@media(max-width:700px){
+.container{flex-direction:column}
+.left-img{text-align:center}
+.left-img img{max-width:180px}
+}
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 12px;
+}
+
+/* TOMBOL KUIS KOTAK MINI */
+.menu button {
+  width: 130px;
+  height: 45px;
+  border-radius: 12px;
+  font-size: 13px;
+  text-align: center;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+.scoreCard {
+  animation: popUp 0.5s ease;
+}
+
+@keyframes popUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.answer {
+  transition: 0.3s ease;
+}
+#quizBox {
+  animation: fadeSlide 0.4s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.main {
+  margin: auto;
+  max-width: 500px;
+}
+/* ANIMASI TOMBOL MAIN LAGI */
+.scoreCard button{
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+  color:white;
+  border:none;
+  padding:12px 22px;
+  font-size:14px;
+  border-radius:25px;
+  margin-top:10px;
+  cursor:pointer;
+  box-shadow:0 6px 15px rgba(0,0,0,.25);
+  animation: pulse 1.6s infinite;
+  transition: .3s;
+}
+
+.scoreCard button:hover{
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #ffd93d, #ffb703);
+  color:#333;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(79,172,254,.5);}
+  70%{box-shadow:0 0 0 10px rgba(79,172,254,0);}
+  100%{box-shadow:0 0 0 0 rgba(79,172,254,0);}
+}
+
+
+.answer:active {
+  transform: scale(0.95);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>🎯 Quizy App - Kuis Seru & Edukatif</header>
+
+<div class="container">
+
+<!-- GAMBAR -->
+<div class="left-img">
+<img src="https://cdn-icons-png.flaticon.com/512/2721/2721295.png">
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="menu" id="menu"></div>
+
+<div id="quizBox" style="display:none">
+<div id="qNum"></div>
+<div class="question" id="question"></div>
+<div id="answers"></div>
+</div>
+
+<div id="scoreBox" style="display:none"></div>
+
+</div>
+</div>
+
+<div class="nav" style="display:none" id="navBtn">
+<button class="btn-back" onclick="back()">⬅ Kembali</button>
+<button class="btn-next" onclick="next()">Next ➜</button>
+</div>
+
+<footer>© KreavoSolvix 2025</footer>
+
+<script>
+
+const quizzes=[...Array(10)].map((_,i)=>`Kuis ${i+1}`);
+const menu=document.getElementById("menu");
+let cQuiz=0,cQ=0,score=0;
+
+const data=[
+/* KUIS 1 */
+[{q:"5+3?",o:["6","7","8","9"],a:2},{q:"10x2?",o:["10","15","20","25"],a:2},{q:"8+4?",o:["10","11","12","13"],a:2},{q:"9-3?",o:["5","6","7","8"],a:1},{q:"7x5?",o:["30","35","40","45"],a:1},{q:"12÷3?",o:["2","3","4","5"],a:2},{q:"6+7?",o:["12","13","14","15"],a:1},{q:"15-5?",o:["9","10","11","12"],a:1}],
+/* KUIS 2 */
+[{q:"Ibukota Indonesia?",o:["Jakarta","Bandung","Bali","Surabaya"],a:0},{q:"Presiden pertama?",o:["Soekarno","Suharto","Habibie","Jokowi"],a:0},{q:"Merah Putih?",o:["Bendera","Lambang","Logo","Mars"],a:0},{q:"17 Agustus?",o:["Hari Pahlawan","Kemerdekaan","Pancasila","Guru"],a:1},{q:"Indonesia di?",o:["Asia","Eropa","Afrika","Amerika"],a:0},{q:"Garuda?",o:["Burung","Ikan","Lambang","Negara"],a:2},{q:"Pancasila ada?",o:["4","5","6","7"],a:1},{q:"Bhinneka Tunggal Ika artinya?",o:["Satu Bangsa","Beda tetap satu","Berbeda Negara","Satu Jiwa"],a:1}],
+/* KUIS 3 */
+[{q:"Planet terdekat?",o:["Bumi","Venus","Merkurius","Mars"],a:2},{q:"Manusia bernapas pakai?",o:["Jantung","Paru-paru","Kulit","Lambung"],a:1},{q:"Air membeku?",o:["0","10","50","100"],a:0},{q:"Matahari?",o:["Planet","Bintang","Bulan","Meteor"],a:1},{q:"Fotosintesis?",o:["Bernapas","Makan","Membuat makanan","Minum"],a:2},{q:"Gas kita hirup?",o:["CO2","Oksigen","Helium","Hidrogen"],a:1},{q:"Telinga untuk?",o:["Melihat","Mendengar","Mencium","Meraba"],a:1},{q:"Kulit untuk?",o:["Indra","Otot","Tulang","Darah"],a:0}],
+];
+
+/* DUPLIKASI JADI 10 */
+while(data.length<10)data.push(data[Math.floor(Math.random()*3)]);
+
+quizzes.forEach((q,i)=>{
+menu.innerHTML+=`<button onclick="start(${i})">${q}</button>`;
+});
+
+function start(i){
+cQuiz=i;cQ=0;score=0;
+menu.style.display="none";
+document.getElementById("quizBox").style.display="block";
+document.getElementById("navBtn").style.display="flex";
+load();
+}
+
+function load(){
+let q=data[cQuiz][cQ];
+document.getElementById("qNum").innerHTML=`Soal ${cQ+1}/8`;
+document.getElementById("question").innerHTML=q.q;
+document.getElementById("answers").innerHTML="";
+q.o.forEach((o,i)=>{
+document.getElementById("answers").innerHTML+=
+`<div class="answer" onclick="check(${i})">${o}</div>`;
+});
+}
+
+function check(i){
+if(i===data[cQuiz][cQ].a)score++;
+next();
+}
+
+function next(){
+cQ++;
+if(cQ>=8)finish();
+else load();
+}
+
+function back(){
+if(cQ>0){cQ--;load();}
+else{
+menu.style.display="block";
+document.getElementById("quizBox").style.display="none";
+document.getElementById("navBtn").style.display="none";
+}
+}
+
+function finish(){
+document.getElementById("quizBox").style.display="none";
+document.getElementById("navBtn").style.display="none";
+document.getElementById("scoreBox").style.display="block";
+document.getElementById("scoreBox").innerHTML=`
+<div class="scoreCard">
+<img src="https://cdn-icons-png.flaticon.com/512/1021/1021293.png">
+<h2>Kuis Selesai!</h2>
+<p>Skor kamu</p>
+<h1>${score} / 8</h1>
+<button onclick="location.reload()">Main Lagi</button>
+</div>`;
+}
+
+</script>
+
+</body>
+</html>
